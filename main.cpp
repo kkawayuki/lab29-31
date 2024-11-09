@@ -87,12 +87,11 @@ int main()
     //program loop
     for(int i = 0; i < DAYS; i++)
     {
-        //manually invoke seperate function calls 
-        printInfo(notRobinhood, i+1); //so days start at one
+        //runMonth(notRobinhood);
+        //printInfo(notRobinhood, i+1); //so days start at one
     }
 
-    //testing purposes 
-    cout << matchCompany("CommServ",1);
+    //testing purpose functions 
 
     return(0);
 }
@@ -136,12 +135,12 @@ void readIntoList(map<string,array<list<int>,3>>&app, string sector, ifstream &i
     }
 }
 
-// void runMonth(map<string,array<list<int>,3>>&app)
-// {
-//     //stockPrice(app); //legacy function, arrays are now populated
-//     calcTradeVolume(app);
-//     marketWide(app); 
-// }
+void runMonth(map<string,array<list<int>,3>>&app)
+{
+    // stockPrice(app); //legacy function, arrays are now populated
+    // calcTradeVolume(app);
+    // marketWide(app); 
+}
 
 void stockPrice(map<string,array<list<int>,3>>&app)
 {
@@ -174,7 +173,7 @@ string matchCompany(string sector, int company) //used to match numbers to speci
     {
         {0, "AAPL"},
         {1, "NVDA"},
-        {2, "MSFT"},
+        {2, "CTLP"}, //cantaloupe inc, a smaller company
     };
 
 

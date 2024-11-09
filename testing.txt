@@ -8,4 +8,15 @@ Points of concern for the application
 Addressing points of concern:
 
 1/2. Write a program to print out a stock's name followed by the price data corresponding to that stock
-The function will work for each of 2 sectors, for each of 3 stocks 
+The function will work for each of 2 sectors, for each of 3 stocks. Because each stock posesses 30 days of 
+data, the function will format/print 180 lines of data concisely into the terminal. 
+
+
+
+
+
+
+3. For the volume trading estimate, it will operate based on the price of the stock. For example, a popular,
+high-valued stock will have higher trading volume than that of a smaller company (reason for inclusion of CTLP)
+using a function to output the estimates for trade comparing a huge company (ex: NVDA) to a smaller one should give
+a vastly different estimate proportional to the price of that current day. 
