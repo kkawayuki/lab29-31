@@ -58,14 +58,15 @@ using namespace std;
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
 // void runMonth(map<string,array<list<double>,3>>&app);
-void stockPrice(map<string, array<list<double>, 3>> &app);
+void simStockFluctuation(map<string, array<list<double>, 3>> &app);
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int);
 string matchCompany(string sector, int company);
-void marketWide(map<string, array<list<double>, 3>> &app);
+void marketOrSectorWide(map<string, array<list<double>, 3>> &app);
 void printInfo(map<string, array<list<double>, 3>> app, int);
 
 // driver tests for the program
 void testLists(map<string, array<list<double>, 3>> app);
+void testVolume(map<string, array<list<double>, 3>> app); 
 
 const int NUM_STOCKS = 3, DAYS = 30;
 
@@ -92,6 +93,7 @@ int main()
 
     // testing purpose functions
     testLists(notRobinhood);
+    testVolume(notRobinhood); 
 
     return (0);
 }
@@ -137,25 +139,30 @@ void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstr
 
 void runMonth(map<string, array<list<double>, 3>> &app)
 {
-    // stockPrice(app); //legacy function, arrays are now populated
-    // calcTradeVolume(app);
-    // marketWide(app);
+    marketOrSectorWide(app); //sim marketwide change
+    simStockFluctuation(app); //legacy function, arrays are now populated
+    //for each stock: 
+    //calcTradeVolume(app, sectorname, company int);
+    
 }
 
-void stockPrice(map<string, array<list<double>, 3>> &app)
+void simStockFluctuation(map<string, array<list<double>, 3>> &app)
 {
+    //function to simulate slight fluctation in stock prices? 
 }
 
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company)
 {
     int volume = 0; // variable to do calculations upon
 
+    volume = rand() % 2938; // test function
+
     // to be implemented
     // probably calculates based on current stock price,
     // if went up, volume up (people buying high)
     // if went down, volume WAY up (people selling out of fear)
 
-    cout << "Trading volume for " << matchCompany(sector, company) << ": " << volume;
+    cout << "vol: " << matchCompany(sector, company) << ": " << volume << '\n';
 }
 
 string matchCompany(string sector, int company) // used to match numbers to specific companies
@@ -186,16 +193,16 @@ string matchCompany(string sector, int company) // used to match numbers to spec
         return ("INVALID COMPANY REFERENCED"); // error message as precaution
 }
 
-void marketWide(map<string, array<list<double>, 3>> &app)
+void marketOrSectorWide(map<string, array<list<double>, 3>> &app)
 {
-    //logic for Sectorwide/Marketwide crash or boom, will probably
-    //work based on a random value generation, with a chance each
-    //time in the monthloop. 
+    // logic for Sectorwide/Marketwide crash or boom, will probably
+    // work based on a random value generation, with a chance each
+    // time in the monthloop.
 }
 
 void printInfo(map<string, array<list<double>, 3>> app, int i)
 {
-    // logic to print data for each day, will be similar to 
+    // logic to print data for each day, will be similar to
     // the tester function for the list output, interestingly
     // enough
 }
@@ -221,7 +228,7 @@ void testLists(map<string, array<list<double>, 3>> app)
         }
         cout << '\n';
     }
-    cout << "\n"; //format
+    cout << "\n"; // format
 
     cout << "TESTING INFOTECH SECTOR: \n";
     for (int i = 0; i < NUM_STOCKS; i++)
@@ -245,11 +252,16 @@ void testVolume(map<string, array<list<double>, 3>> app)
 {
     cout << "\nNOW CALCULATING TRADE VOLUMES: \n\n";
     cout << "FOR NVDA: \n";
-    //for loop nvda
-    calcTradeVolume(app, "InfoTech", 1);
-
+    auto &companyList = app["InfoTech"][1]; // address
+    for (double val : companyList)
+    {
+        calcTradeVolume(app, "InfoTech", 1);
+    }
     
     cout << "FOR CTLP: \n";
-    //for loop cantalopue
-    calcTradeVolume(app, "InfoTech", 2 );
+    auto &companyList2 = app["InfoTech"][2]; // address
+    for (double val : companyList)
+    {
+        calcTradeVolume(app, "InfoTech", 2);
+    }
 }

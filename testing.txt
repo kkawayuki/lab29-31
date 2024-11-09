@@ -57,3 +57,20 @@ high-valued stock will have higher trading volume than that of a smaller company
 using a function to output the estimates for trade comparing a huge company (ex: NVDA) to a smaller one should give
 a vastly different estimate proportional to the price of that current day. 
 
+void testVolume(map<string, array<list<double>, 3>> app)
+{
+    cout << "\nNOW CALCULATING TRADE VOLUMES: \n\n";
+    cout << "FOR NVDA: \n";
+    auto &companyList = app["InfoTech"][1]; // address
+    for (double val : companyList)
+    {
+        calcTradeVolume(app, "InfoTech", 1);
+    }
+    
+    cout << "FOR CTLP: \n";
+    auto &companyList2 = app["InfoTech"][2]; // address
+    for (double val : companyList)
+    {
+        calcTradeVolume(app, "InfoTech", 2);
+    }
+}
