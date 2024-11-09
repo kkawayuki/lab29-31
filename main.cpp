@@ -57,11 +57,14 @@ using namespace std;
 //function prototypes
 void readInData(map<string,array<list<int>,3>>&, string); 
 void readIntoList(map<string,array<list<int>,3>>&, string, ifstream &); //helper
-void runMonth(map<string,array<list<int>,3>>&app);
+//void runMonth(map<string,array<list<int>,3>>&app);
 void stockPrice(map<string,array<list<int>,3>>&app);
-void calcTradeVolume(map<string,array<list<int>,3>>&app);
+void calcTradeVolume(map<string,array<list<int>,3>>&app, string, int);
+string matchCompany(string sector, int company);
 void marketWide(map<string,array<list<int>,3>>&app);
 void printInfo(map<string,array<list<int>,3>>app, int);
+
+//driver tests for the program
 
 
 const int NUM_STOCKS = 3, DAYS = 30;
@@ -84,9 +87,12 @@ int main()
     //program loop
     for(int i = 0; i < DAYS; i++)
     {
-        runMonth(notRobinhood);
+        //manually invoke seperate function calls 
         printInfo(notRobinhood, i+1); //so days start at one
     }
+
+    //testing purposes 
+    cout << matchCompany("CommServ",1);
 
     return(0);
 }
@@ -130,12 +136,12 @@ void readIntoList(map<string,array<list<int>,3>>&app, string sector, ifstream &i
     }
 }
 
-void runMonth(map<string,array<list<int>,3>>&app)
-{
-    //stockPrice(app); //legacy function, arrays are now populated
-    calcTradeVolume(app);
-    marketWide(app); 
-}
+// void runMonth(map<string,array<list<int>,3>>&app)
+// {
+//     //stockPrice(app); //legacy function, arrays are now populated
+//     calcTradeVolume(app);
+//     marketWide(app); 
+// }
 
 void stockPrice(map<string,array<list<int>,3>>&app)
 {
@@ -143,36 +149,44 @@ void stockPrice(map<string,array<list<int>,3>>&app)
 
 void calcTradeVolume(map<string,array<list<int>,3>>&app, string sector, int company)
 {
+    int volume = 0; //variable to do calculations upon
+
     //to be implemented
-    cout << "Trading volume for "; 
+        //probably calculates based on current stock price, 
+        //if went up, volume up (people buying high)
+        //if went down, volume WAY up (people selling out of fear)
+
+    cout << "Trading volume for " << matchCompany(sector, company) << ": " << volume; 
 }
 
-string matchCompany(map<string,array<list<int>,3>>&app, string sector, int company) //used to match numbers to specific companies
+string matchCompany(string sector, int company) //used to match numbers to specific companies
 {
     //utilize maps in this function to list ints to stock names
     //itc = "int to company"
     map<int,string>itcCommServ = 
     {
-        {0, ""},
-        {1, ""},
-        {2, ""},
+        {0, "GOOGL"},
+        {1, "META"},
+        {2, "NFLX"},
     };
+
     map<int,string>itcInfoTech = 
     {
-        {0, ""},
-        {1, ""},
-        {2, ""},
+        {0, "AAPL"},
+        {1, "NVDA"},
+        {2, "MSFT"},
     };
 
 
     if(sector == "CommServ")
-    {
-
-    }
+        return(itcCommServ[company]);
+    
     else if (sector == "InfoTech")
-    {
-
-    }
+        return(itcInfoTech[company]);
+    
+    else
+        return("INVALID COMPANY REFERENCED"); //error message as precaution
+    
 }
 
 void marketWide(map<string,array<list<int>,3>>&app)

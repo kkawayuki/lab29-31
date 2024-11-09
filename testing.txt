@@ -1,0 +1,11 @@
+Going to conduct unit testing for various parts of the program:
+
+Points of concern for the application
+1. Correct reading in of data to respective lists
+2. List correct association with stocks
+3. Correct calculation of a volume trading estimate
+
+Addressing points of concern:
+
+1/2. Write a program to print out a stock's name followed by the price data corresponding to that stock
+The function will work for each of 2 sectors, for each of 3 stocks 
