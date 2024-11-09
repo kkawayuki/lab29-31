@@ -12,11 +12,48 @@ The function will work for each of 2 sectors, for each of 3 stocks. Because each
 data, the function will format/print 180 lines of data concisely into the terminal. 
 
 
+void testLists(map<string, array<list<int>, 3>> app)
+{
+    // for commserv sector
+    cout << "TESTING COMMSERV SECTOR: \n";
+    for (int i = 0; i < NUM_STOCKS; i++)
+    {
+        cout << matchCompany("CommServ", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
 
+        auto &companyList = app["CommServ"][i]; // address
+        int j = 0;
+        for (int val : companyList)
+        {
+            cout << val << " ";
+            if (j % 10 == 0 && j != 0)
+                cout << '\n'; // formatting
+            j++;
+        }
+        cout << '\n';
+    }
+    cout << "\n"; //format
 
+    cout << "TESTING INFOTECH SECTOR: \n";
+    for (int i = 0; i < NUM_STOCKS; i++)
+    {
+        cout << matchCompany("InfoTech", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
+
+        auto &companyList = app["InfoTech"][i]; // address
+        int j = 0;
+        for (int val : companyList)
+        {
+            cout << val << " ";
+            if (j % 10 == 0 && j != 0)
+                cout << '\n'; // formatting
+            j++;
+        }
+        cout << '\n';
+    }
+}
 
 
 3. For the volume trading estimate, it will operate based on the price of the stock. For example, a popular,
 high-valued stock will have higher trading volume than that of a smaller company (reason for inclusion of CTLP)
 using a function to output the estimates for trade comparing a huge company (ex: NVDA) to a smaller one should give
 a vastly different estimate proportional to the price of that current day. 
+
