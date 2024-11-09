@@ -55,12 +55,13 @@
 using namespace std;
 
 //function prototypes
-void readInData(map<string,array<list<int>,3>>&); 
+void readInData(map<string,array<list<int>,3>>&, string); 
 void runMonth(map<string,array<list<int>,3>>&app);
 void stockPrice(map<string,array<list<int>,3>>&app);
 void tradeVolume(map<string,array<list<int>,3>>&app);
 void marketWide(map<string,array<list<int>,3>>&app);
 void printInfo(map<string,array<list<int>,3>>app, int);
+
 
 int main()
 {
@@ -68,7 +69,14 @@ int main()
     srand(time(0)); 
 
     map<string,array<list<int>,3>>notRobinhood; 
-    readInData(notRobinhood); 
+
+    //initialize the key/value pair of two arrays 
+    notRobinhood["CommServ"]; 
+    notRobinhood["InfoTech"]; 
+
+    //read in data to each of the array nested loops
+    readInData(notRobinhood, "Comm.txt"); //string passed to differentiate sectors
+    readInData(notRobinhood, "IT.txt"); 
 
     //program loop
     for(int i = 0; i < DAYS; i++)
@@ -80,21 +88,34 @@ int main()
     return(0);
 }
 
-//implementation
+//implementation functions
 
-//thinking about it maybe the list elements should be structs for me 
-//if they each have details such as prices/volumes of trade, they can't be so one-dimensional
-
-void readInData(map<string,array<list<int>,3>>&app)
+void readInData(map<string,array<list<int>,3>>&app, string sector) //different sectors each have different text files
 {
-    //at the moment stocks are represented not by names but as list integers 0,1,2
-    ifstream in("stockInfo.txt");
+    ifstream in(sector); //open sector-specific file
     if(!in.good())
     {
         cout << "ERROR OPENING FILE\n"; //no file exists at the moment
     }
-    app["Communications Sector"][0].push_back(150); 
+    else if(sector == "Comm.txt")
+    {
+
+    }
+    else if(sector == "IT.txt")
+    {
+
+    }
+    else
+    {
+        cout << "Invalid Sector passed.\n";
+    }
+    //notation: app["Communications Sector"][0].push_back(150); 
     in.close(); 
+}
+
+void readIntoList() //helper function
+{
+
 }
 
 void runMonth(map<string,array<list<int>,3>>&app)
