@@ -197,5 +197,30 @@ void printInfo(map<string,array<list<int>,3>>app, int i)
     //logic to print data for each day
 }
 
-// TODO: Make proper struct for each list? Or just have main handle specific stocks?
-    //going to be hard to have a seperate tracker for trade volume unless I start using something like a struct.
+// testing functions
+
+void testLists(map<string,array<list<int>,3>>app)
+{
+    //for commserv sector
+    cout << "TESTING COMMSERV SECTOR: \n";
+
+    for(int i = 0; i < NUM_STOCKS; i++)
+    {
+        cout << matchCompany("CommServ",i); //test the ability of matchCompany for the "Commserv" arary 
+        for(int j = 0; j < DAYS; j++)  //test the validity of read-in data for specific stock
+        {
+            cout << app["CommServ"][i][j];
+        }
+    }
+
+    cout << "TESTING INFOTECH SECTOR: \n";
+    
+    for(int i = 0; i < NUM_STOCKS; i++)
+    {
+        cout << matchCompany("InfoTech",i); //test the ability of matchCompany for the "InfoTech" arary 
+        for(int j = 0; j < DAYS; j++) //test the validity of read-in data for specific stock
+        {
+
+        }
+    }
+}
