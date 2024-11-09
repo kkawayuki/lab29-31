@@ -68,10 +68,10 @@ const int NUM_STOCKS = 3, DAYS = 30;
 
 int main()
 {
-    ;
     srand(time(0)); 
 
     map<string,array<list<int>,3>>notRobinhood; 
+    //need a way to differentiate lists because each represent a different stock but are currently represented as ints.
 
     //initialize the key/value pair of two arrays 
     notRobinhood["CommServ"]; 
@@ -102,7 +102,7 @@ void readInData(map<string,array<list<int>,3>>&app, string sector) //different s
     }
     else if(sector == "Comm.txt")
     {
-        readIntoList(app, "CommServ", in); //populates each of three lists
+        readIntoList(app, "CommServ", in); //populates each of three lists (lists currently have no way of being differentiated)
     }
     else if(sector == "IT.txt")
     {
@@ -112,7 +112,6 @@ void readInData(map<string,array<list<int>,3>>&app, string sector) //different s
     {
         cout << "Invalid Sector passed.\n";
     }
-    //notation: app["Communications Sector"][0].push_back(150); 
     in.close(); 
 }
 
@@ -121,40 +120,38 @@ void readIntoList(map<string,array<list<int>,3>>&app, string sector, ifstream &i
     int buf; //stores values to populate map
     for(int i = 0; i < NUM_STOCKS; i++)
     {
-        for(int j = 0; j < DAYS; j++)
+        for(int j = 0; j < DAYS; j++) //assumes each company has exactly 30 days in the text file
         {
-            in >> buf; //move data to buf
+            in >> buf; 
             app[sector][i].push_back(buf); //push back to list
         }
+
+        cout << "List has been populated by: " << sector << "!\n"; //FOR TESTING PURPOSES
     }
 }
 
 void runMonth(map<string,array<list<int>,3>>&app)
 {
-    stockPrice(app);
+    stockPrice(app); //legacy function, arrays are now populated
     tradeVolume(app);
     marketWide(app); 
 }
 
 void stockPrice(map<string,array<list<int>,3>>&app)
 {
-    cout << "Stock prices went places.\n";
-    app["Communications Sector"][0].push_back(rand()%20+150); //assign a random value for testing 
 }
 
 void tradeVolume(map<string,array<list<int>,3>>&app)
 {
-    cout << "Trade volumes changed\n"; 
 }
 
 void marketWide(map<string,array<list<int>,3>>&app)
 {
-    cout << "Market did things.\n";
 }
 
 void printInfo(map<string,array<list<int>,3>>app, int i) 
 {
-    cout << "[DAY " << i << "]: AAPL now at " << app["Communications Sector"][0].back() << "$ \n\n";
+    //logic to print data for each day
 }
 
 // TODO: Make proper struct for each list? Or just have main handle specific stocks?
