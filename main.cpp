@@ -59,7 +59,7 @@ void readInData(map<string,array<list<int>,3>>&, string);
 void readIntoList(map<string,array<list<int>,3>>&, string, ifstream &); //helper
 void runMonth(map<string,array<list<int>,3>>&app);
 void stockPrice(map<string,array<list<int>,3>>&app);
-void tradeVolume(map<string,array<list<int>,3>>&app);
+void calcTradeVolume(map<string,array<list<int>,3>>&app);
 void marketWide(map<string,array<list<int>,3>>&app);
 void printInfo(map<string,array<list<int>,3>>app, int);
 
@@ -132,8 +132,8 @@ void readIntoList(map<string,array<list<int>,3>>&app, string sector, ifstream &i
 
 void runMonth(map<string,array<list<int>,3>>&app)
 {
-    stockPrice(app); //legacy function, arrays are now populated
-    tradeVolume(app);
+    //stockPrice(app); //legacy function, arrays are now populated
+    calcTradeVolume(app);
     marketWide(app); 
 }
 
@@ -141,8 +141,38 @@ void stockPrice(map<string,array<list<int>,3>>&app)
 {
 }
 
-void tradeVolume(map<string,array<list<int>,3>>&app)
+void calcTradeVolume(map<string,array<list<int>,3>>&app, string sector, int company)
 {
+    //to be implemented
+    cout << "Trading volume for "; 
+}
+
+string matchCompany(map<string,array<list<int>,3>>&app, string sector, int company) //used to match numbers to specific companies
+{
+    //utilize maps in this function to list ints to stock names
+    //itc = "int to company"
+    map<int,string>itcCommServ = 
+    {
+        {0, ""},
+        {1, ""},
+        {2, ""},
+    };
+    map<int,string>itcInfoTech = 
+    {
+        {0, ""},
+        {1, ""},
+        {2, ""},
+    };
+
+
+    if(sector == "CommServ")
+    {
+
+    }
+    else if (sector == "InfoTech")
+    {
+
+    }
 }
 
 void marketWide(map<string,array<list<int>,3>>&app)
