@@ -55,17 +55,17 @@
 using namespace std;
 
 // function prototypes
-void readInData(map<string, array<list<int>, 3>> &, string);
-void readIntoList(map<string, array<list<int>, 3>> &, string, ifstream &); // helper
-// void runMonth(map<string,array<list<int>,3>>&app);
-void stockPrice(map<string, array<list<int>, 3>> &app);
-void calcTradeVolume(map<string, array<list<int>, 3>> &app, string, int);
+void readInData(map<string, array<list<double>, 3>> &, string);
+void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
+// void runMonth(map<string,array<list<double>,3>>&app);
+void stockPrice(map<string, array<list<double>, 3>> &app);
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int);
 string matchCompany(string sector, int company);
-void marketWide(map<string, array<list<int>, 3>> &app);
-void printInfo(map<string, array<list<int>, 3>> app, int);
+void marketWide(map<string, array<list<double>, 3>> &app);
+void printInfo(map<string, array<list<double>, 3>> app, int);
 
 // driver tests for the program
-void testLists(map<string, array<list<int>, 3>> app);
+void testLists(map<string, array<list<double>, 3>> app);
 
 const int NUM_STOCKS = 3, DAYS = 30;
 
@@ -73,8 +73,7 @@ int main()
 {
     srand(time(0));
 
-    map<string, array<list<int>, 3>> notRobinhood;
-    // need a way to differentiate lists because each represent a different stock but are currently represented as ints.
+    map<string, array<list<double>, 3>> notRobinhood;
 
     // initialize the key/value pair of two arrays
     notRobinhood["CommServ"];
@@ -99,7 +98,7 @@ int main()
 
 // implementation functions
 
-void readInData(map<string, array<list<int>, 3>> &app, string sector) // different sectors each have different text files
+void readInData(map<string, array<list<double>, 3>> &app, string sector) // different sectors each have different text files
 {
     ifstream in(sector); // open sector-specific file
     if (!in.good())
@@ -121,9 +120,9 @@ void readInData(map<string, array<list<int>, 3>> &app, string sector) // differe
     in.close();
 }
 
-void readIntoList(map<string, array<list<int>, 3>> &app, string sector, ifstream &in) // helper function
+void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstream &in) // helper function
 {
-    int buf; // stores values to populate map
+    double buf; // stores values to populate map
     for (int i = 0; i < NUM_STOCKS; i++)
     {
         for (int j = 0; j < DAYS; j++) // assumes each company has exactly 30 days in the text file
@@ -136,18 +135,18 @@ void readIntoList(map<string, array<list<int>, 3>> &app, string sector, ifstream
     }
 }
 
-void runMonth(map<string, array<list<int>, 3>> &app)
+void runMonth(map<string, array<list<double>, 3>> &app)
 {
     // stockPrice(app); //legacy function, arrays are now populated
     // calcTradeVolume(app);
     // marketWide(app);
 }
 
-void stockPrice(map<string, array<list<int>, 3>> &app)
+void stockPrice(map<string, array<list<double>, 3>> &app)
 {
 }
 
-void calcTradeVolume(map<string, array<list<int>, 3>> &app, string sector, int company)
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company)
 {
     int volume = 0; // variable to do calculations upon
 
@@ -187,18 +186,23 @@ string matchCompany(string sector, int company) // used to match numbers to spec
         return ("INVALID COMPANY REFERENCED"); // error message as precaution
 }
 
-void marketWide(map<string, array<list<int>, 3>> &app)
+void marketWide(map<string, array<list<double>, 3>> &app)
 {
+    //logic for Sectorwide/Marketwide crash or boom, will probably
+    //work based on a random value generation, with a chance each
+    //time in the monthloop. 
 }
 
-void printInfo(map<string, array<list<int>, 3>> app, int i)
+void printInfo(map<string, array<list<double>, 3>> app, int i)
 {
-    // logic to print data for each day
+    // logic to print data for each day, will be similar to 
+    // the tester function for the list output, interestingly
+    // enough
 }
 
 // testing functions
 
-void testLists(map<string, array<list<int>, 3>> app)
+void testLists(map<string, array<list<double>, 3>> app)
 {
     // for commserv sector
     cout << "TESTING COMMSERV SECTOR: \n";
@@ -208,7 +212,7 @@ void testLists(map<string, array<list<int>, 3>> app)
 
         auto &companyList = app["CommServ"][i]; // address
         int j = 0;
-        for (int val : companyList)
+        for (double val : companyList)
         {
             cout << val << " ";
             if (j % 10 == 0 && j != 0)
@@ -226,7 +230,7 @@ void testLists(map<string, array<list<int>, 3>> app)
 
         auto &companyList = app["InfoTech"][i]; // address
         int j = 0;
-        for (int val : companyList)
+        for (double val : companyList)
         {
             cout << val << " ";
             if (j % 10 == 0 && j != 0)
@@ -237,7 +241,15 @@ void testLists(map<string, array<list<int>, 3>> app)
     }
 }
 
-void testVolume()
+void testVolume(map<string, array<list<double>, 3>> app)
 {
+    cout << "\nNOW CALCULATING TRADE VOLUMES: \n\n";
+    cout << "FOR NVDA: \n";
+    //for loop nvda
+    calcTradeVolume(app, "InfoTech", 1);
+
     
+    cout << "FOR CTLP: \n";
+    //for loop cantalopue
+    calcTradeVolume(app, "InfoTech", 2 );
 }
