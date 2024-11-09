@@ -1,129 +1,267 @@
-//Include necessary libraries
-//Include necessary header file(s)
-//Namespace std
+// Include necessary libraries
+// Include necessary header file(s)
+// Namespace std
 
-//function prototypes for various necessary parts of program
-    //day running function (facilitates changes)
-    //helper function for printing formatted data
-    //function for tracking trade volume
-    //function for tracking stock price
-    //function for tracking sector-wide effects
+// function prototypes for various necessary parts of program
+// day running function (facilitates changes)
+// helper function for printing formatted data
+// function for tracking trade volume
+// function for tracking stock price
+// function for tracking sector-wide effects
 
-    //function parameters will depend on whether they reference or change fields
-        //reference vs value
+// function parameters will depend on whether they reference or change fields
+// reference vs value
 
-//define main()
-    //initalize a map named something like "notRobinhood" to store data about various sector(s) arrays
-        //each sector array associated a list of three companies
-    
-    //open an external file to read in data about the companies and populate their associated list entries
-        //include error handling/messaging
-        //close once all data has been sucessfully read in
-    
-    //begin the time-based for loop simulating a month's market fluctuations
-        // 30ish calls to the day running function 
-            //for each array (sector)
-                //facilitates any sector-wide changes
-                //for each list (stock)
-                    //facilitates data changes (stock price increase/decreate), (trading volume increase/decrease)
-                    //data printing, ex: [Day X: APPL: 231.23, VOLUME: +232,323]
-                    //similar printing that announces sector-wide events
-                        //could even get crazy and do whole-market effects (in spirit of the recent election)
-                
-    // pause briefly/add space between messages to maintain readable breakdown
+// define main()
+// initalize a map named something like "notRobinhood" to store data about various sector(s) arrays
+// each sector array associated a list of three companies
 
-//end main()
-    
-//function implementation:
-    //day running function (facilitates changes)
-    //helper function for printing formatted data
-    //function for tracking trade volume
-    //function for tracking stock price
-    //function for tracking sector-wide effects
+// open an external file to read in data about the companies and populate their associated list entries
+// include error handling/messaging
+// close once all data has been sucessfully read in
 
+// begin the time-based for loop simulating a month's market fluctuations
+//  30ish calls to the day running function
+// for each array (sector)
+// facilitates any sector-wide changes
+// for each list (stock)
+// facilitates data changes (stock price increase/decreate), (trading volume increase/decrease)
+// data printing, ex: [Day X: APPL: 231.23, VOLUME: +232,323]
+// similar printing that announces sector-wide events
+// could even get crazy and do whole-market effects (in spirit of the recent election)
+
+// pause briefly/add space between messages to maintain readable breakdown
+
+// end main()
+
+// function implementation:
+// day running function (facilitates changes)
+// helper function for printing formatted data
+// function for tracking trade volume
+// function for tracking stock price
+// function for tracking sector-wide effects
 
 // COMSC-210 | labs 29-31 | Kent Kawashima
 // IDE used: Visual Studio Code
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list> // for std::list
+#include <list>  // for std::list
 #include <array> //for std::array
 #include <map>
 #include <time.h>
 #include <random>
+#include <string>
 using namespace std;
 
-//function prototypes
-void readInData(map<string,array<list<int>,3>>&); 
-void runMonth(map<string,array<list<int>,3>>&app);
-void stockPrice(map<string,array<list<int>,3>>&app);
-void tradeVolume(map<string,array<list<int>,3>>&app);
-void marketWide(map<string,array<list<int>,3>>&app);
-void printInfo(map<string,array<list<int>,3>>app, int);
+// function prototypes
+void readInData(map<string, array<list<double>, 3>> &, string);
+void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
+// void runMonth(map<string,array<list<double>,3>>&app);
+void simStockFluctuation(map<string, array<list<double>, 3>> &app);
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int);
+string matchCompany(string sector, int company);
+void marketOrSectorWide(map<string, array<list<double>, 3>> &app);
+void printInfo(map<string, array<list<double>, 3>> app, int);
+
+// driver tests for the program
+void testLists(map<string, array<list<double>, 3>> app);
+void testVolume(map<string, array<list<double>, 3>> app); 
+
+const int NUM_STOCKS = 3, DAYS = 30;
 
 int main()
 {
-    const int DAYS = 30;
-    srand(time(0)); 
+    srand(time(0));
 
-    map<string,array<list<int>,3>>notRobinhood; 
-    readInData(notRobinhood); 
+    map<string, array<list<double>, 3>> notRobinhood;
 
-    //program loop
-    for(int i = 0; i < DAYS; i++)
+    // initialize the key/value pair of two arrays
+    notRobinhood["CommServ"];
+    notRobinhood["InfoTech"];
+
+    // read in data to each of the array nested loops
+    readInData(notRobinhood, "Comm.txt"); // string passed to differentiate sectors
+    readInData(notRobinhood, "IT.txt");
+
+    // program loop
+    for (int i = 0; i < DAYS; i++)
     {
-        runMonth(notRobinhood);
-        printInfo(notRobinhood, i+1); //so days start at one
+        // runMonth(notRobinhood);
+        // printInfo(notRobinhood, i+1); //so days start at one
     }
 
-    return(0);
+    // testing purpose functions
+    testLists(notRobinhood);
+    testVolume(notRobinhood); 
+
+    return (0);
 }
 
-//implementation
+// implementation functions
 
-//thinking about it maybe the list elements should be structs for me 
-//if they each have details such as prices/volumes of trade, they can't be so one-dimensional
-
-void readInData(map<string,array<list<int>,3>>&app)
+void readInData(map<string, array<list<double>, 3>> &app, string sector) // different sectors each have different text files
 {
-    //at the moment stocks are represented not by names but as list integers 0,1,2
-    ifstream in("stockInfo.txt");
-    if(!in.good())
+    ifstream in(sector); // open sector-specific file
+    if (!in.good())
     {
-        cout << "ERROR OPENING FILE\n"; //no file exists at the moment
+        cout << "ERROR OPENING FILE\n"; // no file exists at the moment
     }
-    app["Communications Sector"][0].push_back(150); 
-    in.close(); 
+    else if (sector == "Comm.txt")
+    {
+        readIntoList(app, "CommServ", in); // populates each of three lists (lists currently have no way of being differentiated)
+    }
+    else if (sector == "IT.txt")
+    {
+        readIntoList(app, "InfoTech", in);
+    }
+    else
+    {
+        cout << "Invalid Sector passed.\n";
+    }
+    in.close();
 }
 
-void runMonth(map<string,array<list<int>,3>>&app)
+void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstream &in) // helper function
 {
-    stockPrice(app);
-    tradeVolume(app);
-    marketWide(app); 
+    double buf; // stores values to populate map
+    for (int i = 0; i < NUM_STOCKS; i++)
+    {
+        for (int j = 0; j < DAYS; j++) // assumes each company has exactly 30 days in the text file
+        {
+            in >> buf;
+            app[sector][i].push_back(buf); // push back to list
+        }
+
+        cout << "List has been populated by: " << sector << "!\n"; // FOR TESTING PURPOSES
+    }
 }
 
-void stockPrice(map<string,array<list<int>,3>>&app)
+void runMonth(map<string, array<list<double>, 3>> &app)
 {
-    cout << "Stock prices went places.\n";
-    app["Communications Sector"][0].push_back(rand()%20+150); //assign a random value for testing 
+    marketOrSectorWide(app); //sim marketwide change
+    simStockFluctuation(app); //legacy function, arrays are now populated
+    //for each stock: 
+    //calcTradeVolume(app, sectorname, company int);
+    
 }
 
-void tradeVolume(map<string,array<list<int>,3>>&app)
+void simStockFluctuation(map<string, array<list<double>, 3>> &app)
 {
-    cout << "Trade volumes changed\n"; 
+    //function to simulate slight fluctation in stock prices? 
 }
 
-void marketWide(map<string,array<list<int>,3>>&app)
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company)
 {
-    cout << "Market did things.\n";
+    int volume = 0; // variable to do calculations upon
+
+    volume = rand() % 2938; // test function
+
+    // to be implemented
+    // probably calculates based on current stock price,
+    // if went up, volume up (people buying high)
+    // if went down, volume WAY up (people selling out of fear)
+
+    cout << "vol: " << matchCompany(sector, company) << ": " << volume << '\n';
 }
 
-void printInfo(map<string,array<list<int>,3>>app, int i) 
+string matchCompany(string sector, int company) // used to match numbers to specific companies
 {
-    cout << "[DAY " << i << "]: AAPL now at " << app["Communications Sector"][0].back() << "$ \n\n";
+    // utilize maps in this function to list ints to stock names
+    // itc = "int to company"
+    map<int, string> itcCommServ =
+        {
+            {0, "GOOGL"},
+            {1, "META"},
+            {2, "NFLX"},
+        };
+
+    map<int, string> itcInfoTech =
+        {
+            {0, "AAPL"},
+            {1, "NVDA"},
+            {2, "CTLP"}, // cantaloupe inc, a smaller company
+        };
+
+    if (sector == "CommServ")
+        return (itcCommServ[company]);
+
+    else if (sector == "InfoTech")
+        return (itcInfoTech[company]);
+
+    else
+        return ("INVALID COMPANY REFERENCED"); // error message as precaution
 }
 
-// TODO: Make proper struct for each list? Or just have main handle specific stocks?
-    //going to be hard to have a seperate tracker for trade volume unless I start using something like a struct.
+void marketOrSectorWide(map<string, array<list<double>, 3>> &app)
+{
+    // logic for Sectorwide/Marketwide crash or boom, will probably
+    // work based on a random value generation, with a chance each
+    // time in the monthloop.
+}
+
+void printInfo(map<string, array<list<double>, 3>> app, int i)
+{
+    // logic to print data for each day, will be similar to
+    // the tester function for the list output, interestingly
+    // enough
+}
+
+// testing functions
+
+void testLists(map<string, array<list<double>, 3>> app)
+{
+    // for commserv sector
+    cout << "TESTING COMMSERV SECTOR: \n";
+    for (int i = 0; i < NUM_STOCKS; i++)
+    {
+        cout << matchCompany("CommServ", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
+
+        auto &companyList = app["CommServ"][i]; // address
+        int j = 0;
+        for (double val : companyList)
+        {
+            cout << val << " ";
+            if (j % 10 == 0 && j != 0)
+                cout << '\n'; // formatting
+            j++;
+        }
+        cout << '\n';
+    }
+    cout << "\n"; // format
+
+    cout << "TESTING INFOTECH SECTOR: \n";
+    for (int i = 0; i < NUM_STOCKS; i++)
+    {
+        cout << matchCompany("InfoTech", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
+
+        auto &companyList = app["InfoTech"][i]; // address
+        int j = 0;
+        for (double val : companyList)
+        {
+            cout << val << " ";
+            if (j % 10 == 0 && j != 0)
+                cout << '\n'; // formatting
+            j++;
+        }
+        cout << '\n';
+    }
+}
+
+void testVolume(map<string, array<list<double>, 3>> app)
+{
+    cout << "\nNOW CALCULATING TRADE VOLUMES: \n\n";
+    cout << "FOR NVDA: \n";
+    auto &companyList = app["InfoTech"][1]; // address
+    for (double val : companyList)
+    {
+        calcTradeVolume(app, "InfoTech", 1);
+    }
+    
+    cout << "FOR CTLP: \n";
+    auto &companyList2 = app["InfoTech"][2]; // address
+    for (double val : companyList)
+    {
+        calcTradeVolume(app, "InfoTech", 2);
+    }
+}
