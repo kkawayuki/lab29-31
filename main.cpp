@@ -56,6 +56,7 @@ using namespace std;
 
 //function prototypes
 void readInData(map<string,array<list<int>,3>>&, string); 
+void readIntoList(map<string,array<list<int>,3>>&, string, ifstream &); //helper
 void runMonth(map<string,array<list<int>,3>>&app);
 void stockPrice(map<string,array<list<int>,3>>&app);
 void tradeVolume(map<string,array<list<int>,3>>&app);
@@ -63,9 +64,11 @@ void marketWide(map<string,array<list<int>,3>>&app);
 void printInfo(map<string,array<list<int>,3>>app, int);
 
 
+const int NUM_STOCKS = 3, DAYS = 30;
+
 int main()
 {
-    const int DAYS = 30;
+    ;
     srand(time(0)); 
 
     map<string,array<list<int>,3>>notRobinhood; 
@@ -99,11 +102,11 @@ void readInData(map<string,array<list<int>,3>>&app, string sector) //different s
     }
     else if(sector == "Comm.txt")
     {
-
+        readIntoList(app, "CommServ", in); //populates each of three lists
     }
     else if(sector == "IT.txt")
     {
-
+        readIntoList(app, "InfoTech", in);
     }
     else
     {
@@ -113,9 +116,17 @@ void readInData(map<string,array<list<int>,3>>&app, string sector) //different s
     in.close(); 
 }
 
-void readIntoList() //helper function
+void readIntoList(map<string,array<list<int>,3>>&app, string sector, ifstream &in) //helper function
 {
-
+    int buf; //stores values to populate map
+    for(int i = 0; i < NUM_STOCKS; i++)
+    {
+        for(int j = 0; j < DAYS; j++)
+        {
+            in >> buf; //move data to buf
+            app[sector][i].push_back(buf); //push back to list
+        }
+    }
 }
 
 void runMonth(map<string,array<list<int>,3>>&app)
