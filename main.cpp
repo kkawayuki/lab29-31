@@ -58,7 +58,7 @@ using namespace std;
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
 void runDay(map<string,array<list<double>,3>>&app, int);
-void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int, int);
+void calcTradeVolume(map<string, array<list<double>, 3>> app, string, int, int, int);
 string matchCompany(string sector, int company);
 string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
 
@@ -143,24 +143,27 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
     if(trade == "Boom")
     {
         cout << "Huge Market Boom!\n";
-        volumeClassification = 4;
+        volumeClassification = 1;
     }
     else if(trade == "Rally")
     {
         cout << "Market Rally!\n";
-        volumeClassification = 3;
+        volumeClassification = 2;
     }
     else if(trade == "Incident")
     {
         cout << "Market Incident!\n";
-        volumeClassification = 2;
+        volumeClassification = 3;
     }
     else if(trade == "Catastrophe")
     {
         cout << "Market Catastrophe!\n";
-        volumeClassification = 1;
+        volumeClassification = 4;
     }
+    else
+        volumeClassification = 0; //normal day
 
+    //calculation and printing for each sector
     cout << "COMMSERV TEST\n";
     for(int i = 0; i < 3; i++)
     {
@@ -180,10 +183,11 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
     cout << '\n'; 
 }
 
-void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification, int day)
+void calcTradeVolume(map<string, array<list<double>, 3>> app, string sector, int company, int classification, int day)
 {
-    int formatter = 0; 
-    double current = 0, volume = 0;
+    double current = 0, volume = 0, price;
+    double classicationToVolume[] = {1, 3.0, 1.5, 1.4, 2.0}; //values corresponding to multipliers that market events have on trading volume
+    double classicationToPrice[] = {1, 1.2, 1.05, 0.97, 0.85}; //these correspond to how stock prices might shift (ex: 1.05 implies that a stock might jump: current*1.05, in price)
 
     //navigate to location of current element:
     current = app[sector][company].front(); 
@@ -192,7 +196,8 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
     //technically be repaired through another call to the data reading function, as the .txt file remains
     //unchanged. 
 
-    volume = current; 
+    price = current; //calc stock price
+    volume = current; //calc stock volume
 
     // to be implemented
     // probably calculates based on current stock price,
@@ -201,10 +206,11 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
 
     //integrate printinfo() into calcTradeVolume
 
+
+
+    //print information
+    cout << matchCompany(sector,company) << ": price: " << ;
     cout << "vol: " << current << " ";
-    formatter++;
-    if (formatter % 10 == 0 && formatter != 0)
-        cout << '\n';
 }
 
 string matchCompany(string sector, int company) // used to match numbers to specific companies
