@@ -66,7 +66,7 @@ void printInfo(map<string, array<list<double>, 3>> app, int);
 
 // driver tests for the program
 void testLists(map<string, array<list<double>, 3>> app);
-void testVolume(map<string, array<list<double>, 3>> app); 
+void testVolume(map<string, array<list<double>, 3>> app);
 
 const int NUM_STOCKS = 3, DAYS = 30;
 
@@ -93,7 +93,7 @@ int main()
 
     // testing purpose functions
     testLists(notRobinhood);
-    testVolume(notRobinhood); 
+    testVolume(notRobinhood);
 
     return (0);
 }
@@ -139,21 +139,20 @@ void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstr
 
 void runMonth(map<string, array<list<double>, 3>> &app)
 {
-    marketOrSectorWide(app); //sim marketwide change
-    simStockFluctuation(app); //legacy function, arrays are now populated
-    //for each stock: 
-    //calcTradeVolume(app, sectorname, company int);
-    
+    marketOrSectorWide(app);  // sim marketwide change
+    simStockFluctuation(app); // legacy function, arrays are now populated
+    // for each stock:
+    // calcTradeVolume(app, sectorname, company int);
 }
 
 void simStockFluctuation(map<string, array<list<double>, 3>> &app)
 {
-    //function to simulate slight fluctation in stock prices? 
+    // function to simulate slight fluctation in stock prices?
 }
 
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company)
 {
-    int volume = 0; // variable to do calculations upon
+    int volume = 0, i = 0; // variable to do calculations upon
 
     volume = rand() % 2938; // test function
 
@@ -162,7 +161,10 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
     // if went up, volume up (people buying high)
     // if went down, volume WAY up (people selling out of fear)
 
-    cout << "vol: " << matchCompany(sector, company) << ": " << volume << '\n';
+    cout << "vol: " << volume << " ";
+    i++;
+    if (i % 10 == 0 && i != 0)
+        cout << '\n';
 }
 
 string matchCompany(string sector, int company) // used to match numbers to specific companies
@@ -257,7 +259,9 @@ void testVolume(map<string, array<list<double>, 3>> app)
     {
         calcTradeVolume(app, "InfoTech", 1);
     }
-    
+
+    cout << "\n\n";
+
     cout << "FOR CTLP: \n";
     auto &companyList2 = app["InfoTech"][2]; // address
     for (double val : companyList)
