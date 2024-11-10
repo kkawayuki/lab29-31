@@ -57,8 +57,7 @@ using namespace std;
 // function prototypes
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
-// void runMonth(map<string,array<list<double>,3>>&app);
-void simStockFluctuation(map<string, array<list<double>, 3>> &app);
+void runDay(map<string,array<list<double>,3>>&app);
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int);
 string matchCompany(string sector, int company);
 void marketOrSectorWide(map<string, array<list<double>, 3>> &app);
@@ -85,15 +84,15 @@ int main()
     readInData(notRobinhood, "IT.txt");
 
     // program loop
-    for (int i = 0; i < DAYS; i++)
+    for (int i = 0; i < 3; i++) //testing with days at 3 to not flood terminal
     {
-        // runMonth(notRobinhood);
-        // printInfo(notRobinhood, i+1); //so days start at one
+        runDay(notRobinhood);
+        printInfo(notRobinhood, i+1); //so days start at one
     }
 
     // testing purpose functions
-    testLists(notRobinhood);
-    testVolume(notRobinhood);
+    // testLists(notRobinhood);
+    // testVolume(notRobinhood);
 
     return (0);
 }
@@ -132,22 +131,18 @@ void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstr
             in >> buf;
             app[sector][i].push_back(buf); // push back to list
         }
-
-        cout << "List has been populated by: " << sector << "!\n"; // FOR TESTING PURPOSES
     }
 }
 
-void runMonth(map<string, array<list<double>, 3>> &app)
+void runDay(map<string, array<list<double>, 3>> &app)
 {
     marketOrSectorWide(app);  // sim marketwide change
-    simStockFluctuation(app); // legacy function, arrays are now populated
-    // for each stock:
-    // calcTradeVolume(app, sectorname, company int);
-}
 
-void simStockFluctuation(map<string, array<list<double>, 3>> &app)
-{
-    // function to simulate slight fluctation in stock prices?
+    // for each stock:
+    for(int i = 0; i < 3; i++)
+        calcTradeVolume(app, "CommServ", i); 
+    for(int i = 0; i < 3; i++)
+        calcTradeVolume(app, "InfoTech", i); 
 }
 
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company)
