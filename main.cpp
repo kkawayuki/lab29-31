@@ -58,13 +58,13 @@ using namespace std;
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
 void runDay(map<string,array<list<double>,3>>&app, int);
-void calcTradeVolume(map<string, array<list<double>, 3>> app, string, int, int, int);
+void calcTradeVolume(map<string, array<list<double>, 3>> app, string, int, int);
 string matchCompany(string sector, int company);
 string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
 
-// driver tests for the program
-void testLists(map<string, array<list<double>, 3>> app);
-void testVolume(map<string, array<list<double>, 3>> app);
+// driver tests for the program (legacy)
+// void testLists(map<string, array<list<double>, 3>> app);
+// void testVolume(map<string, array<list<double>, 3>> app);
 
 const int NUM_STOCKS = 3, DAYS = 30;
 
@@ -138,7 +138,7 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
     int volumeClassification = 0; 
 
     //day testing
-    cout << "DAY " << day + 1 << " OF SIMULATION:\n";
+    cout << "DAY " << day + 1 << " OF SIMULATION: ";
 
     if(trade == "Boom")
     {
@@ -161,33 +161,38 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
         volumeClassification = 4;
     }
     else
+    {
+        cout << '\n';
         volumeClassification = 0; //normal day
+    }
+
+    cout << '\n';
 
     //calculation and printing for each sector
-    cout << "COMMSERV TEST\n";
+    cout << "CommServ Sector:\n";
     for(int i = 0; i < 3; i++)
     {
-        calcTradeVolume(app, "CommServ", i, volumeClassification, day); 
+        calcTradeVolume(app, "CommServ", i, volumeClassification); 
         cout <<'\n';
     }
         
     cout << '\n';
 
-    cout << "INFOTECH TEST\n";
+    cout << "IT Sector:\n";
     for(int i = 0; i < 3; i++)
     {
-        calcTradeVolume(app, "InfoTech", i, volumeClassification, day); 
+        calcTradeVolume(app, "InfoTech", i, volumeClassification); 
         cout <<'\n';
     }
     
     cout << '\n'; 
 }
 
-void calcTradeVolume(map<string, array<list<double>, 3>> app, string sector, int company, int classification, int day)
+void calcTradeVolume(map<string, array<list<double>, 3>> app, string sector, int company, int classification)
 {
     double current = 0, volume = 0, price;
-    double classicationToVolume[] = {1, 3.0, 1.5, 1.4, 2.0}; //values corresponding to multipliers that market events have on trading volume
-    double classicationToPrice[] = {1, 1.2, 1.05, 0.97, 0.85}; //these correspond to how stock prices might shift (ex: 1.05 implies that a stock might jump: current*1.05, in price)
+    double classicationToVolume[] = {1, 1.9, 1.3, 1.4, 2.0}; //values corresponding to multipliers that market events have on trading volume
+    double classicationToPrice[] = {1, 1.2, 1.05, 0.92, 0.80}; //these correspond to how stock prices might shift (ex: 1.05 implies that a stock might jump: current*1.05, in price)
 
     //navigate to location of current element:
     current = app[sector][company].front(); 
@@ -196,21 +201,12 @@ void calcTradeVolume(map<string, array<list<double>, 3>> app, string sector, int
     //technically be repaired through another call to the data reading function, as the .txt file remains
     //unchanged. 
 
-    price = current; //calc stock price
-    volume = current; //calc stock volume
-
-    // to be implemented
-    // probably calculates based on current stock price,
-    // if went up, volume up (people buying high)
-    // if went down, volume WAY up (people selling out of fear)
-
-    //integrate printinfo() into calcTradeVolume
-
+    price = current*classicationToPrice[classification]; //var to calc stock price
+    volume = price*(current*classicationToVolume[classification])*100; //var to calc stock volume
 
 
     //print information
-    cout << matchCompany(sector,company) << ": price: " << ;
-    cout << "vol: " << current << " ";
+    cout << fixed << setprecision(2) << matchCompany(sector,company) << ": price: $" << price << ", volume: $" << volume;
 }
 
 string matchCompany(string sector, int company) // used to match numbers to specific companies
@@ -264,7 +260,7 @@ string marketOrSectorWide(map<string, array<list<double>, 3>> &app)
     return("Normal Day"); 
 }
 
-// testing functions
+// testing functions (legacy)
 
 // void testLists(map<string, array<list<double>, 3>> app)
 // {

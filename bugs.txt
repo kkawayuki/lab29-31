@@ -1,5 +1,4 @@
-File To Describe Bugs I come across
-"short descriptions of bugs you encountered while coding and testing, and how you corrected them"
+BUGS AND FIXES
 
 1. Information printing not iterating correctly through lists
 Implementation of .front() , .pop_front() algorithms to assist with access
@@ -24,3 +23,23 @@ corrected syntax to abide by std::list conventions.  ADDMORE
 Update logic to reflect various aspects of stock might react
 - clarify that volume refers to the monetary value of stocks traded (volume neither positive/negative)
 - reflects the general popularity of the stock, (has proportionality to pricing)
+
+6. volume output too large to be represented by double (started printing in scientific notation)
+Updated output logic to only print to 2nd decimal precision to standardize output
+
+7. 
+
+
+THINGS I COULD IMPROVE UPON
+
+1. Program doesn't take into account market cap of stocks, only prices
+causes over/underestimation of company popularity based on the current price of one share,
+as companies that split shares are underrepresented in their trade volume as a result
+
+2. In real life, events such as Rallies/Issues in the market are rarely market or even sector-wide,
+often pertaining to specific companies only. This simulation does not account for that level
+of precision, instead abstracting to a market-wide level for simplicity of calculation
+
+3. Expandability of program is quesitonable due to the number of manual loop setups for things like
+calculation and output, to add another sector and corresponding companies for example, there'd be a
+lot of work with adding another text file for prices, loops, and relating integers to companies.
