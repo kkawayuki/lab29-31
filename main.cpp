@@ -58,7 +58,7 @@ using namespace std;
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
 void runDay(map<string,array<list<double>,3>>&app, int);
-void calcTradeVolume(map<string, array<list<double>, 3>> app, string, int, int);
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int);
 string matchCompany(string sector, int company);
 string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
 
@@ -83,7 +83,7 @@ int main()
     readInData(notRobinhood, "IT.txt");
 
     // program loop
-    for (int i = 0; i < 3; i++) //testing with days at 3 to not flood terminal
+    for (int i = 0; i < 3; i++)
     {
         runDay(notRobinhood, i); //shorthand to calc+display relevant info
     }
@@ -188,7 +188,7 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
     cout << '\n'; 
 }
 
-void calcTradeVolume(map<string, array<list<double>, 3>> app, string sector, int company, int classification)
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification)
 {
     double current = 0, volume = 0, price;
     double classicationToVolume[] = {1, 1.9, 1.3, 1.4, 2.0}; //values corresponding to multipliers that market events have on trading volume

@@ -27,8 +27,10 @@ Update logic to reflect various aspects of stock might react
 6. volume output too large to be represented by double (started printing in scientific notation)
 Updated output logic to only print to 2nd decimal precision to standardize output
 
-7. 
+7. Output for volume/price not changing day by day in output
+Pass original map by reference in order to alter the references using logic mentioned in bug fix 1.
 
+8. 
 
 THINGS I COULD IMPROVE UPON
 
@@ -43,3 +45,6 @@ of precision, instead abstracting to a market-wide level for simplicity of calcu
 3. Expandability of program is quesitonable due to the number of manual loop setups for things like
 calculation and output, to add another sector and corresponding companies for example, there'd be a
 lot of work with adding another text file for prices, loops, and relating integers to companies.
+
+4. Output for volume hard to read, doesn't abbreviate/comma out large volume prices so 3.3B looks like
+$3300000000, maybe there's a library for this somewhere that I could implement to utilize more algorithms. 
