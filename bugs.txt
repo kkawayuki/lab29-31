@@ -3,4 +3,9 @@ File To Describe Bugs I come across
 
 1. Information printing not iterating correctly through lists
 
-2.
+2. Difficulty implementing print functionality:
+Moved printing functionality into the calculating function 
+of the program to reduce the amount of references needed to be
+passed, function now calculates then prints relevant Information
+
+3.

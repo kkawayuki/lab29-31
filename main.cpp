@@ -57,7 +57,7 @@ using namespace std;
 // function prototypes
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
-void runDay(map<string,array<list<double>,3>>&app);
+void runDay(map<string,array<list<double>,3>>&app, int);
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int);
 string matchCompany(string sector, int company);
 string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
@@ -85,7 +85,7 @@ int main()
     // program loop
     for (int i = 0; i < 3; i++) //testing with days at 3 to not flood terminal
     {
-        runDay(notRobinhood); //shorthand to calc+display relevant info
+        runDay(notRobinhood, i); //shorthand to calc+display relevant info
     }
 
     // testing purpose functions
@@ -132,7 +132,7 @@ void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstr
     }
 }
 
-void runDay(map<string, array<list<double>, 3>> &app)
+void runDay(map<string, array<list<double>, 3>> &app, int day)
 {
     string trade = marketOrSectorWide(app); //market fluctuates randomly
     int volumeClassification = 0; 
@@ -155,14 +155,17 @@ void runDay(map<string, array<list<double>, 3>> &app)
     }
 
     for(int i = 0; i < 3; i++)
-        calcTradeVolume(app, "CommServ", i, volumeClassification); 
+        calcTradeVolume(app, "CommServ", i, volumeClassification, day); 
     for(int i = 0; i < 3; i++)
-        calcTradeVolume(app, "InfoTech", i, volumeClassification); 
+        calcTradeVolume(app, "InfoTech", i, volumeClassification, day); 
 }
 
-void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification)
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification, int day)
 {
-    int volume = 0, i = 0; // variable to do calculations upon
+    int volume = 0, i = 0; 
+    double current = 0;
+    //navigate to location of current element:
+    
 
     volume = rand() % 2938; // test function
 
