@@ -4,20 +4,17 @@ BUGS AND FIXES
 Implementation of .front() , .pop_front() algorithms to assist with access
 (because random access is unusable in an std::list). 
 
-2. Difficulty implementing print functionality:
+2. Complexity of implementing print functionality too high:
 Moved printing functionality into the calculating function 
 of the program to reduce the amount of references needed to be
 passed, function now calculates then prints relevant Information.
-
 
 3. Output of function incorrectly staggered, not displaying random marketwide events: 
 corrected formatting and updated parameter list to include the market climate through 
 inclusion of an: int classification variable.
 
-
 4. calcTradeVolume() function not accessing list elements correctly due to inability to random access: 
 corrected syntax to abide by std::list conventions.  ADDMORE
-
 
 5. Oversight of how trade volume might be calculated (very incorrect calculation)
 Update logic to reflect various aspects of stock might react
@@ -30,7 +27,8 @@ Updated output logic to only print to 2nd decimal precision to standardize outpu
 7. Output for volume/price not changing day by day in output
 Pass original map by reference in order to alter the references using logic mentioned in bug fix 1.
 
-8. 
+8. Various functions with incorrect parameter lists irreflective of map 
+Revised functions to only have reference to the map if needed/relevant for the function
 
 THINGS I COULD IMPROVE UPON
 

@@ -60,17 +60,18 @@ void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); //
 void runDay(map<string,array<list<double>,3>>&app, int);
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int);
 string matchCompany(string sector, int company);
-string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
+string marketOrSectorWide();
 
-// driver tests for the program (legacy)
+// driver test prototypes (legacy)
 // void testLists(map<string, array<list<double>, 3>> app);
 // void testVolume(map<string, array<list<double>, 3>> app);
 
+//global variables
 const int NUM_STOCKS = 3, DAYS = 30;
 
 int main()
 {
-    srand(time(0));
+    srand(time(0)); //seed rand 
 
     map<string, array<list<double>, 3>> notRobinhood;
 
@@ -87,10 +88,6 @@ int main()
     {
         runDay(notRobinhood, i); //shorthand to calc+display relevant info
     }
-
-    // testing purpose functions
-    // testLists(notRobinhood);
-    // testVolume(notRobinhood);
 
     return (0);
 }
@@ -134,11 +131,11 @@ void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstr
 
 void runDay(map<string, array<list<double>, 3>> &app, int day)
 {
-    string trade = marketOrSectorWide(app); //market fluctuates randomly
+    string trade = marketOrSectorWide(); //market fluctuates randomly, (see logic for marketOrSectorWide() return)
     int volumeClassification = 0; 
 
     //day testing
-    cout << "DAY " << day + 1 << " OF SIMULATION: ";
+    cout << "Day " << day + 1 << " of simulation: ";
 
     if(trade == "Boom")
     {
@@ -211,7 +208,7 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
 
 string matchCompany(string sector, int company) // used to match numbers to specific companies
 {
-    // utilize maps in this function to list ints to stock names
+    // utilize maps in this function to relate list ints to stock names
     // itc = "int to company"
     map<int, string> itcCommServ =
         {
@@ -237,7 +234,7 @@ string matchCompany(string sector, int company) // used to match numbers to spec
         return ("INVALID COMPANY REFERENCED"); // error message as precaution
 }
 
-string marketOrSectorWide(map<string, array<list<double>, 3>> &app)
+string marketOrSectorWide()
 {
     int i = (rand()%100)+1;
 
