@@ -30,6 +30,14 @@ Pass original map by reference in order to alter the references using logic ment
 8. Various functions with incorrect parameter lists irreflective of map 
 Revised functions to only have reference to the map if needed/relevant for the function
 
+9. Error implementing switch() case() logic for calculation of Marketwide change
+change to if/else chain to add functionality for checking ranges of values and not just specifics
+
+10. Proportionality of market share price to volume traded too high
+fixed error by reworking logic calculating the volume to model a linear relationship, fixing 
+error of exponential increase before. 
+
+
 THINGS I COULD IMPROVE UPON
 
 1. Program doesn't take into account market cap of stocks, only prices

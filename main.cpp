@@ -56,7 +56,7 @@ using namespace std;
 
 // function prototypes
 void readInData(map<string, array<list<double>, 3>> &, string);
-void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
+void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &);
 void runDay(map<string,array<list<double>,3>>&app, int);
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int);
 string matchCompany(string sector, int company);
@@ -71,7 +71,7 @@ const int NUM_STOCKS = 3, DAYS = 30;
 
 int main()
 {
-    srand(time(0)); //seed rand 
+    srand(time(0));
 
     map<string, array<list<double>, 3>> notRobinhood;
 
@@ -84,7 +84,7 @@ int main()
     readInData(notRobinhood, "IT.txt");
 
     // program loop
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < DAYS; i++)
     {
         runDay(notRobinhood, i); //shorthand to calc+display relevant info
     }
@@ -194,12 +194,9 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
     //navigate to location of current element:
     current = app[sector][company].front(); 
     app[sector][company].pop_front(); //ensures subsequent calls to the function now access the front
-    //NOTE: Ideally, this means of accessing the values would be nondestructive, but the lists could
-    //technically be repaired through another call to the data reading function, as the .txt file remains
-    //unchanged. 
 
     price = current*classicationToPrice[classification]; //var to calc stock price
-    volume = price*(current*classicationToVolume[classification])*100; //var to calc stock volume
+    volume = (price*10000)*classicationToVolume[classification]; //var to calc stock volume
 
 
     //print information
