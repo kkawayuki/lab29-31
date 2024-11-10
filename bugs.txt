@@ -1,0 +1,56 @@
+BUGS AND FIXES
+
+1. Information printing not iterating correctly through lists
+Implementation of .front() , .pop_front() algorithms to assist with access
+(because random access is unusable in an std::list). 
+
+2. Complexity of implementing print functionality too high:
+Moved printing functionality into the calculating function 
+of the program to reduce the amount of references needed to be
+passed, function now calculates then prints relevant Information.
+
+3. Output of function incorrectly staggered, not displaying random marketwide events: 
+corrected formatting and updated parameter list to include the market climate through 
+inclusion of an: int classification variable.
+
+4. calcTradeVolume() function not accessing list elements correctly due to inability to random access: 
+corrected syntax to abide by std::list conventions.  ADDMORE
+
+5. Oversight of how trade volume might be calculated (very incorrect calculation)
+Update logic to reflect various aspects of stock might react
+- clarify that volume refers to the monetary value of stocks traded (volume neither positive/negative)
+- reflects the general popularity of the stock, (has proportionality to pricing)
+
+6. volume output too large to be represented by double (started printing in scientific notation)
+Updated output logic to only print to 2nd decimal precision to standardize output
+
+7. Output for volume/price not changing day by day in output
+Pass original map by reference in order to alter the references using logic mentioned in bug fix 1.
+
+8. Various functions with incorrect parameter lists irreflective of map 
+Revised functions to only have reference to the map if needed/relevant for the function
+
+9. Error implementing switch() case() logic for calculation of Marketwide change
+change to if/else chain to add functionality for checking ranges of values and not just specifics
+
+10. Proportionality of market share price to volume traded too high
+fixed error by reworking logic calculating the volume to model a linear relationship, fixing 
+error of exponential increase before. 
+
+
+THINGS I COULD IMPROVE UPON
+
+1. Program doesn't take into account market cap of stocks, only prices
+causes over/underestimation of company popularity based on the current price of one share,
+as companies that split shares are underrepresented in their trade volume as a result
+
+2. In real life, events such as Rallies/Issues in the market are rarely market or even sector-wide,
+often pertaining to specific companies only. This simulation does not account for that level
+of precision, instead abstracting to a market-wide level for simplicity of calculation
+
+3. Expandability of program is quesitonable due to the number of manual loop setups for things like
+calculation and output, to add another sector and corresponding companies for example, there'd be a
+lot of work with adding another text file for prices, loops, and relating integers to companies.
+
+4. Output for volume hard to read, doesn't abbreviate/comma out large volume prices so 3.3B looks like
+$3300000000, maybe there's a library for this somewhere that I could implement to utilize more algorithms. 
