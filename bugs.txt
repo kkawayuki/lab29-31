@@ -1,4 +1,6 @@
 File To Describe Bugs I come across
 "short descriptions of bugs you encountered while coding and testing, and how you corrected them"
 
-1. 
+1. Information printing not iterating correctly through lists
+
+2.

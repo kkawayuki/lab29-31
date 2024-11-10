@@ -58,10 +58,9 @@ using namespace std;
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
 void runDay(map<string,array<list<double>,3>>&app);
-void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int);
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int);
 string matchCompany(string sector, int company);
-void marketOrSectorWide(map<string, array<list<double>, 3>> &app);
-void printInfo(map<string, array<list<double>, 3>> app, int);
+string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
 
 // driver tests for the program
 void testLists(map<string, array<list<double>, 3>> app);
@@ -86,8 +85,7 @@ int main()
     // program loop
     for (int i = 0; i < 3; i++) //testing with days at 3 to not flood terminal
     {
-        runDay(notRobinhood);
-        printInfo(notRobinhood, i+1); //so days start at one
+        runDay(notRobinhood); //shorthand to calc+display relevant info
     }
 
     // testing purpose functions
@@ -136,16 +134,33 @@ void readIntoList(map<string, array<list<double>, 3>> &app, string sector, ifstr
 
 void runDay(map<string, array<list<double>, 3>> &app)
 {
-    marketOrSectorWide(app);  // sim marketwide change
+    string trade = marketOrSectorWide(app); //market fluctuates randomly
+    int volumeClassification = 0; 
 
-    // for each stock:
+    if(trade == "Boom")
+    {
+        volumeClassification = 4;
+    }
+    else if(trade == "Rally")
+    {
+        volumeClassification = 3;
+    }
+    else if(trade == "Incident")
+    {
+        volumeClassification = 2;
+    }
+    else if(trade == "Catastrophe")
+    {
+        volumeClassification = 1;
+    }
+
     for(int i = 0; i < 3; i++)
-        calcTradeVolume(app, "CommServ", i); 
+        calcTradeVolume(app, "CommServ", i, volumeClassification); 
     for(int i = 0; i < 3; i++)
-        calcTradeVolume(app, "InfoTech", i); 
+        calcTradeVolume(app, "InfoTech", i, volumeClassification); 
 }
 
-void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company)
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification)
 {
     int volume = 0, i = 0; // variable to do calculations upon
 
@@ -155,6 +170,8 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
     // probably calculates based on current stock price,
     // if went up, volume up (people buying high)
     // if went down, volume WAY up (people selling out of fear)
+
+    //integrate printinfo() into calcTradeVolume
 
     cout << "vol: " << volume << " ";
     i++;
@@ -190,18 +207,27 @@ string matchCompany(string sector, int company) // used to match numbers to spec
         return ("INVALID COMPANY REFERENCED"); // error message as precaution
 }
 
-void marketOrSectorWide(map<string, array<list<double>, 3>> &app)
+string marketOrSectorWide(map<string, array<list<double>, 3>> &app)
 {
-    // logic for Sectorwide/Marketwide crash or boom, will probably
-    // work based on a random value generation, with a chance each
-    // time in the monthloop.
-}
+    int i = (rand()%100)+1;
 
-void printInfo(map<string, array<list<double>, 3>> app, int i)
-{
-    // logic to print data for each day, will be similar to
-    // the tester function for the list output, interestingly
-    // enough
+    if(i > 99)
+    {
+        return("Boom");
+    }
+    else if(i > 80)
+    {
+        return("Rally");
+    }
+    else if(i < 20)
+    {
+        return("Incident");
+    }
+    else if(i < 2)
+    {
+        return("Catastrophe");
+    }
+    return("Normal Day"); 
 }
 
 // testing functions
@@ -245,6 +271,7 @@ void testLists(map<string, array<list<double>, 3>> app)
     }
 }
 
+/*
 void testVolume(map<string, array<list<double>, 3>> app)
 {
     cout << "\nNOW CALCULATING TRADE VOLUMES: \n\n";
@@ -264,3 +291,4 @@ void testVolume(map<string, array<list<double>, 3>> app)
         calcTradeVolume(app, "InfoTech", 2);
     }
 }
+*/
