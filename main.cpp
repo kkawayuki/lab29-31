@@ -182,8 +182,8 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
 
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification, int day)
 {
-    int volume = 0, i = 0; 
-    double current = 0;
+    int formatter = 0; 
+    double current = 0, volume = 0;
 
     //navigate to location of current element:
     current = app[sector][company].front(); 
@@ -191,6 +191,8 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
     //NOTE: Ideally, this means of accessing the values would be nondestructive, but the lists could
     //technically be repaired through another call to the data reading function, as the .txt file remains
     //unchanged. 
+
+    volume = current; 
 
     // to be implemented
     // probably calculates based on current stock price,
@@ -200,8 +202,8 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
     //integrate printinfo() into calcTradeVolume
 
     cout << "vol: " << current << " ";
-    i++;
-    if (i % 10 == 0 && i != 0)
+    formatter++;
+    if (formatter % 10 == 0 && formatter != 0)
         cout << '\n';
 }
 
