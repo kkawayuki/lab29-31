@@ -3,9 +3,20 @@ File To Describe Bugs I come across
 
 1. Information printing not iterating correctly through lists
 
+
 2. Difficulty implementing print functionality:
+
 Moved printing functionality into the calculating function 
 of the program to reduce the amount of references needed to be
-passed, function now calculates then prints relevant Information
+passed, function now calculates then prints relevant Information.
 
-3.
+
+3. Output of function incorrectly staggered, not displaying random marketwide events
+
+corrected formatting and updated parameter list to include the market climate through 
+inclusion of an: int classification variable.
+
+
+4. calcTradeVolume() function not accessing list elements correctly due to inability to random access
+
+corrected syntax to abide by std::list conventions.  ADDMORE

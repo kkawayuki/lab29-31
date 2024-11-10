@@ -58,7 +58,7 @@ using namespace std;
 void readInData(map<string, array<list<double>, 3>> &, string);
 void readIntoList(map<string, array<list<double>, 3>> &, string, ifstream &); // helper
 void runDay(map<string,array<list<double>,3>>&app, int);
-void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int);
+void calcTradeVolume(map<string, array<list<double>, 3>> &app, string, int, int, int);
 string matchCompany(string sector, int company);
 string marketOrSectorWide(map<string, array<list<double>, 3>> &app);
 
@@ -137,37 +137,60 @@ void runDay(map<string, array<list<double>, 3>> &app, int day)
     string trade = marketOrSectorWide(app); //market fluctuates randomly
     int volumeClassification = 0; 
 
+    //day testing
+    cout << "DAY " << day + 1 << " OF SIMULATION:\n";
+
     if(trade == "Boom")
     {
+        cout << "Huge Market Boom!\n";
         volumeClassification = 4;
     }
     else if(trade == "Rally")
     {
+        cout << "Market Rally!\n";
         volumeClassification = 3;
     }
     else if(trade == "Incident")
     {
+        cout << "Market Incident!\n";
         volumeClassification = 2;
     }
     else if(trade == "Catastrophe")
     {
+        cout << "Market Catastrophe!\n";
         volumeClassification = 1;
     }
 
+    cout << "COMMSERV TEST\n";
     for(int i = 0; i < 3; i++)
+    {
         calcTradeVolume(app, "CommServ", i, volumeClassification, day); 
+        cout <<'\n';
+    }
+        
+    cout << '\n';
+
+    cout << "INFOTECH TEST\n";
     for(int i = 0; i < 3; i++)
+    {
         calcTradeVolume(app, "InfoTech", i, volumeClassification, day); 
+        cout <<'\n';
+    }
+    
+    cout << '\n'; 
 }
 
 void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, int company, int classification, int day)
 {
     int volume = 0, i = 0; 
     double current = 0;
-    //navigate to location of current element:
-    
 
-    volume = rand() % 2938; // test function
+    //navigate to location of current element:
+    current = app[sector][company].front(); 
+    app[sector][company].pop_front(); //ensures subsequent calls to the function now access the front
+    //NOTE: Ideally, this means of accessing the values would be nondestructive, but the lists could
+    //technically be repaired through another call to the data reading function, as the .txt file remains
+    //unchanged. 
 
     // to be implemented
     // probably calculates based on current stock price,
@@ -176,7 +199,7 @@ void calcTradeVolume(map<string, array<list<double>, 3>> &app, string sector, in
 
     //integrate printinfo() into calcTradeVolume
 
-    cout << "vol: " << volume << " ";
+    cout << "vol: " << current << " ";
     i++;
     if (i % 10 == 0 && i != 0)
         cout << '\n';
@@ -235,44 +258,44 @@ string marketOrSectorWide(map<string, array<list<double>, 3>> &app)
 
 // testing functions
 
-void testLists(map<string, array<list<double>, 3>> app)
-{
-    // for commserv sector
-    cout << "TESTING COMMSERV SECTOR: \n";
-    for (int i = 0; i < NUM_STOCKS; i++)
-    {
-        cout << matchCompany("CommServ", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
+// void testLists(map<string, array<list<double>, 3>> app)
+// {
+//     // for commserv sector
+//     cout << "TESTING COMMSERV SECTOR: \n";
+//     for (int i = 0; i < NUM_STOCKS; i++)
+//     {
+//         cout << matchCompany("CommServ", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
 
-        auto &companyList = app["CommServ"][i]; // address
-        int j = 0;
-        for (double val : companyList)
-        {
-            cout << val << " ";
-            if (j % 10 == 0 && j != 0)
-                cout << '\n'; // formatting
-            j++;
-        }
-        cout << '\n';
-    }
-    cout << "\n"; // format
+//         auto &companyList = app["CommServ"][i]; // address
+//         int j = 0;
+//         for (double val : companyList)
+//         {
+//             cout << val << " ";
+//             if (j % 10 == 0 && j != 0)
+//                 cout << '\n'; // formatting
+//             j++;
+//         }
+//         cout << '\n';
+//     }
+//     cout << "\n"; // format
 
-    cout << "TESTING INFOTECH SECTOR: \n";
-    for (int i = 0; i < NUM_STOCKS; i++)
-    {
-        cout << matchCompany("InfoTech", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
+//     cout << "TESTING INFOTECH SECTOR: \n";
+//     for (int i = 0; i < NUM_STOCKS; i++)
+//     {
+//         cout << matchCompany("InfoTech", i) << '\n'; // test the ability of matchCompany for the "Commserv" array
 
-        auto &companyList = app["InfoTech"][i]; // address
-        int j = 0;
-        for (double val : companyList)
-        {
-            cout << val << " ";
-            if (j % 10 == 0 && j != 0)
-                cout << '\n'; // formatting
-            j++;
-        }
-        cout << '\n';
-    }
-}
+//         auto &companyList = app["InfoTech"][i]; // address
+//         int j = 0;
+//         for (double val : companyList)
+//         {
+//             cout << val << " ";
+//             if (j % 10 == 0 && j != 0)
+//                 cout << '\n'; // formatting
+//             j++;
+//         }
+//         cout << '\n';
+//     }
+// }
 
 /*
 void testVolume(map<string, array<list<double>, 3>> app)
